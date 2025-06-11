@@ -1,0 +1,55 @@
+class TrieNode {
+    TrieNode[] children;
+    boolean isEndOfWord;
+
+    public TrieNode() {
+        children = new TrieNode[26]; // One for each lowercase letter
+        isEndOfWord = false;
+    }
+}
+
+public class Trie {
+    private TrieNode root;
+
+    /** Initialize your data structure here. */
+    public Trie() {
+        root = new TrieNode();
+    }
+
+    /** Inserts a word into the trie. */
+    public void insert(String word) {
+        TrieNode node = root;
+        for (char c : word.toCharArray()) {
+            int idx = c - 'a';
+            if (node.children[idx] == null) {
+                node.children[idx] = new TrieNode();
+            }
+            node = node.children[idx];
+        }
+        node.isEndOfWord = true;
+    }
+
+    /** Returns if the word is in the trie. */
+    public boolean search(String word) {
+        TrieNode node = searchPrefix(word);
+        return node != null && node.isEndOfWord;
+    }
+
+    /** Returns if there is any word in the trie that starts with the given prefix. */
+    public boolean startsWith(String prefix) {
+        return searchPrefix(prefix) != null;
+    }
+
+    /** Helper method to search for a prefix or whole word. */
+    private TrieNode searchPrefix(String word) {
+        TrieNode node = root;
+        for (char c : word.toCharArray()) {
+            int idx = c - 'a';
+            if (node.children[idx] == null) {
+                return null;
+            }
+            node = node.children[idx];
+        }
+        return node;
+    }
+}
